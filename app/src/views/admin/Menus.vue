@@ -1,6 +1,7 @@
 <script setup>
     import { onMounted } from 'vue';
     import { useMenusStore } from '@/stores/admin/menus'
+    import { can } from '@/helpers'
     const store = useMenusStore()
 
     onMounted(() => {
@@ -9,11 +10,11 @@
     })
 </script>
 <template>
-    <div class="flex justify-center">
+    <div v-if="can('store menu')" class="flex justify-center">
         <Button @click="store.modal.new = true" text="New menu" icon="plus" class="btn-primary" />
     </div>
 
-    <Data-Table :headers="store.headers" :data="store.menus" :loading="store.loading.fetch">
+    <Data-Table v-if="can('view list menus')" :headers="store.headers" :data="store.menus" :loading="store.loading.fetch">
         <template #state="{item}">
             <Icon :icon="item ? 'check' : 'xmark'" :class="item ? 'text-green-500' : 'text-red-500'" />
         </template>
@@ -22,8 +23,8 @@
                 icon="ellipsis-vertical" 
                 variant="btn-alternative"
                 :items="[
-                    { label : 'Edit', icon : 'edit', action : () => store.edit(item) },
-                    { label : 'Delete', icon : 'trash', action : () => store.deleteItem(item) },
+                    { label : 'Edit', icon : 'edit', action : () => store.edit(item), can : can('edit menu') },
+                    { label : 'Delete', icon : 'trash', action : () => store.deleteItem(item), can : can('delete menu') },
                 ]"
             />
         </template>

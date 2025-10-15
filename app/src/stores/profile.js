@@ -90,10 +90,6 @@ export const useProfileStore = defineStore('profile', () => {
         }
     }
 
-    const getFile = (file) => {
-        picture.value = file
-    }
-
     const uploadPhoto = async () => {
         loading.value.upload = true
         try {
@@ -164,7 +160,6 @@ export const useProfileStore = defineStore('profile', () => {
         fetch,
         update,
         changePassword,
-        getFile,
         uploadPhoto,
         deletePicture,
         resetData,

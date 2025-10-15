@@ -302,7 +302,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="px-4 lg:px-7 grid gap-4">
+    <section class="px-4 lg:px-7 grid gap-4 text-black dark:text-gray-300">
         <div class="md:flex md:items-center md:justify-between">
             <div class="inline-flex items-center px-2 py-1.5 gap-2">
                 <span>Mostrar</span>
@@ -380,7 +380,7 @@ onMounted(() => {
         </div>
 
         <!-- Vista móvil -->
-        <div class="grid gap-4 lg:hidden py-4">
+        <div class="grid gap-4 lg:hidden py-4 w-max">
             <div v-for="item in paginatedData" :key="item.id" class="dark:bg-gray-800 p-2 rounded-xl">
                 <table class="w-full">
                     <tr v-if="props.multiple">
@@ -399,9 +399,11 @@ onMounted(() => {
                             :width="head.width" 
                             :hidden="head.hidden">
                             <slot :name="head.key" :item="item">
-                                <p :class="head.class ?? 'text-sm'">
-                                    {{ formatVal(getNestedValue(item, head.key), head.type) }}
-                                </p>
+                                <div :class="`uppercase text-xs ${head.class}`">
+                                    <Icon v-if="head.icon" :icon="head.icon" />
+                                    <span>{{ formatVal(getNestedValue(item, head.key), head.type) }} </span>
+                                    <span>{{ head.text ?? '' }}</span>
+                                </div>
                             </slot>
                         </td>
                     </tr>
@@ -449,7 +451,7 @@ onMounted(() => {
                             :width="head.width" 
                             :hidden="head.hidden">
                             <slot :name="head.key" :item="item">
-                                <div :class="` flex items-center gap-1 uppercase text-xs ${head.class}`">
+                                <div :class="`uppercase text-xs ${head.class}`">
                                     <Icon v-if="head.icon" :icon="head.icon" />
                                     <span>{{ formatVal(getNestedValue(item, head.key), head.type) }} </span>
                                     <span>{{ head.text ?? '' }}</span>
@@ -552,7 +554,7 @@ onMounted(() => {
     }
 
     th {
-        @apply font-semibold uppercase px-6 py-3;
+        @apply font-bold uppercase px-6 py-3;
     }
 
     .select-normal {

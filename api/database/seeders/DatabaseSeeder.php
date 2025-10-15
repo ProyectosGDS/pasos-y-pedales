@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Menu;
 use App\Models\Page;
+use App\Models\Permission;
 use App\Models\Profile;
 use App\Models\UnidadConvivenciaSocial\PasosPedales\Documento;
 use App\Models\UnidadConvivenciaSocial\PasosPedales\Estado;
@@ -52,10 +53,48 @@ class DatabaseSeeder extends Seeder
             'type' => 'page',
             'order' => 2,
         ]);
+
+        Page::create([
+            'label' => 'Menus',
+            'route' => 'Menus',
+            'icon' => 'layer-group',
+            'page_id' => 1,
+            'type' => 'page',
+            'order' => 3,
+        ]);
+
+        Page::create([
+            'label' => 'Roles',
+            'route' => 'Roles',
+            'icon' => 'tag',
+            'page_id' => 1,
+            'type' => 'page',
+            'order' => 4,
+        ]);
         
         Page::create([
+            'label' => 'Permissions',
+            'route' => 'Permissions',
+            'icon' => 'lock',
+            'page_id' => 1,
+            'type' => 'page',
+            'order' => 5,
+        ]);
+        
+        Page::create([
+            'label' => 'Profiles',
+            'route' => 'Profiles',
+            'icon' => 'user-tag',
+            'page_id' => 1,
+            'type' => 'page',
+            'order' => 6,
+        ]);
+
+        // PASOS Y PEDALES
+
+        Page::create([
             'label' => 'Pasos y pedales',
-            'icon' => 'circle',
+            'icon' => 'bicycle',
             'type' => 'parent',
             'order' => 2,
         ]);
@@ -63,8 +102,8 @@ class DatabaseSeeder extends Seeder
         Page::create([
             'label' => 'Recepción',
             'route' => 'Recepcion',
-            'icon' => 'folder',
-            'page_id' => 4,
+            'icon' => 'file-signature',
+            'page_id' => 8,
             'type' => 'page',
             'order' => 1,
         ]);
@@ -72,8 +111,8 @@ class DatabaseSeeder extends Seeder
         Page::create([
             'label' => 'Asignaciones',
             'route' => 'Asignaciones',
-            'icon' => 'folder',
-            'page_id' => 4,
+            'icon' => 'map-location-dot',
+            'page_id' => 8,
             'type' => 'page',
             'order' => 2,
         ]);
@@ -81,19 +120,166 @@ class DatabaseSeeder extends Seeder
         Page::create([
             'label' => 'Autorizaciones',
             'route' => 'Autorizaciones',
-            'icon' => 'folder',
-            'page_id' => 4,
+            'icon' => 'user-shield',
+            'page_id' => 8,
             'type' => 'page',
             'order' => 3,
         ]);
 
-        Menu::create([
+        Page::create([
+            'label' => 'Time line',
+            'route' => 'Time line',
+            'icon' => 'timeline',
+            'page_id' => 8,
+            'type' => 'page',
+            'order' => 4,
+        ]);
+
+        Page::create([
+            'label' => 'Solicitud',
+            'route' => 'Solicitud',
+            'icon' => 'bell-concierge',
+            'page_id' => 8,
+            'type' => 'page',
+            'order' => 5,
+        ]);
+
+        $menu = Menu::create([
             'name' => 'Sysadmin'
         ]);
 
-        Role::create([
+        $role = Role::create([
             'name' => 'Sysadmin'
         ]);
+
+        Permission::create([
+            'name' => 'view list users',
+            'guard_name' => 'web',
+            'module' => 'users'
+        ]);
+        Permission::create([
+            'name' => 'store user',
+            'guard_name' => 'web',
+            'module' => 'users'
+        ]);
+        Permission::create([
+            'name' => 'edit user',
+            'guard_name' => 'web',
+            'module' => 'users'
+        ]);
+        Permission::create([
+            'name' => 'delete user',
+            'guard_name' => 'web',
+            'module' => 'users'
+        ]);
+        Permission::create([
+            'name' => 'reset password user',
+            'guard_name' => 'web',
+            'module' => 'users'
+        ]);
+        Permission::create([
+            'name' => 'view list pages',
+            'guard_name' => 'web',
+            'module' => 'pages'
+        ]);
+        Permission::create([
+            'name' => 'store page',
+            'guard_name' => 'web',
+            'module' => 'pages'
+        ]);
+        Permission::create([
+            'name' => 'edit page',
+            'guard_name' => 'web',
+            'module' => 'pages'
+        ]);
+        Permission::create([
+            'name' => 'delete page',
+            'guard_name' => 'web',
+            'module' => 'pages'
+        ]);
+        Permission::create([
+            'name' => 'view list menus',
+            'guard_name' => 'web',
+            'module' => 'menus'
+        ]);
+        Permission::create([
+            'name' => 'store menu',
+            'guard_name' => 'web',
+            'module' => 'menus'
+        ]);
+        Permission::create([
+            'name' => 'edit menu',
+            'guard_name' => 'web',
+            'module' => 'menus'
+        ]);
+        Permission::create([
+            'name' => 'delete menu',
+            'guard_name' => 'web',
+            'module' => 'menus'
+        ]);
+        Permission::create([
+            'name' => 'view list roles',
+            'guard_name' => 'web',
+            'module' => 'roles'
+        ]);
+        Permission::create([
+            'name' => 'store role',
+            'guard_name' => 'web',
+            'module' => 'roles'
+        ]);
+        Permission::create([
+            'name' => 'edit role',
+            'guard_name' => 'web',
+            'module' => 'roles'
+        ]);
+        Permission::create([
+            'name' => 'delete role',
+            'guard_name' => 'web',
+            'module' => 'roles'
+        ]);
+        Permission::create([
+            'name' => 'view list permissions',
+            'guard_name' => 'web',
+            'module' => 'permissions'
+        ]);
+        Permission::create([
+            'name' => 'store permission',
+            'guard_name' => 'web',
+            'module' => 'permissions'
+        ]);
+        Permission::create([
+            'name' => 'edit permission',
+            'guard_name' => 'web',
+            'module' => 'permissions'
+        ]);
+        Permission::create([
+            'name' => 'delete permission',
+            'guard_name' => 'web',
+            'module' => 'permissions'
+        ]);
+
+        Permission::create([
+            'name' => 'view list profiles',
+            'guard_name' => 'web',
+            'module' => 'profiles'
+        ]);
+        Permission::create([
+            'name' => 'store profile',
+            'guard_name' => 'web',
+            'module' => 'profiles'
+        ]);
+        Permission::create([
+            'name' => 'edit profile',
+            'guard_name' => 'web',
+            'module' => 'profiles'
+        ]);
+        Permission::create([
+            'name' => 'delete profile',
+            'guard_name' => 'web',
+            'module' => 'profiles'
+        ]);
+
+        $role->syncPermissions(Permission::all()->pluck('id'));
 
         Profile::create([
             'name' => 'Sysadmin',
@@ -122,13 +308,12 @@ class DatabaseSeeder extends Seeder
             'user_id' => 1
         ]);
 
-        $menu = Menu::find(1);
-        $menu->pages()->sync([1,2,3,4,5,6,7]);
+        $menu->pages()->sync(Page::all()->pluck('id'));
 
 
         for ($i=1; $i <= 25 ; $i++) { 
             Zona::create([
-                'nombre' => 'zona '.$i
+                'nombre' => 'Zona '.$i
             ]);
         }
 
@@ -228,28 +413,28 @@ class DatabaseSeeder extends Seeder
 
         Documento::create([
             'nombre' => 'Carta de solicitud',
-            'path' => 'analisis de conducta Skinner.pdf',
+            'path' => 'UnidadConvivenciaSocial/PasosPedales/Solicitudes/0gr0LE8nKyBqr9qFzABn1s8b8JZ0Pjc2BMImNHhk.pdf',
             'solicitud_id' => 1,
         ]);
         Documento::create([
             'nombre' => 'Dpi',
-            'path' => 'Cv.pdf',
+            'path' => 'UnidadConvivenciaSocial/PasosPedales/Solicitudes/0gr0LE8nKyBqr9qFzABn1s8b8JZ0Pjc2BMImNHhk.pdf',
             'solicitud_id' => 1,
         ]);
         Documento::create([
             'nombre' => 'Rtu',
-            'path' => 'Dilemas éticos y profesionales relacionados con las pruebas.pdf',
+            'path' => 'UnidadConvivenciaSocial/PasosPedales/Solicitudes/0gr0LE8nKyBqr9qFzABn1s8b8JZ0Pjc2BMImNHhk.pdf',
             'solicitud_id' => 1,
         ]);
         Documento::create([
             'nombre' => 'Recibo de servicio',
-            'path' => 'hoja mumero dos.pdf',
+            'path' => 'UnidadConvivenciaSocial/PasosPedales/Solicitudes/0gr0LE8nKyBqr9qFzABn1s8b8JZ0Pjc2BMImNHhk.pdf',
             'solicitud_id' => 1,
         ]);
 
         Documento::create([
             'nombre' => 'Patente de comercio',
-            'path' => 'KELIN.pdf',
+            'path' => 'UnidadConvivenciaSocial/PasosPedales/Solicitudes/0gr0LE8nKyBqr9qFzABn1s8b8JZ0Pjc2BMImNHhk.pdf',
             'solicitud_id' => 1,
         ]);       
         

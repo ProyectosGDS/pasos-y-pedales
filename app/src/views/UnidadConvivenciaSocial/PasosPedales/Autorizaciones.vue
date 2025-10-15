@@ -32,42 +32,43 @@
                 :items="[
                     { label : 'Revisar solicitud', icon : 'file', action : () => store.view(item) }
                 ]"
+                variant="btn-alternative"
             />
         </template>
     </Data-Table>
 
     <Modal :open="store.modal.view" header="Expediente" icon="bell-concierge" size="max-w-3xl" >
         <template #closed>
-            <Icon @click="store.resetData" icon="xmark" class="cursor-pointer text-xl p-2 hover:bg-gray-800 rounded-lg" />
+            <Icon @click="store.resetData" icon="xmark" class="cursor-pointer text-xl p-2 hover:bg-gray-300 hover:dark:bg-gray-800 rounded-lg" />
         </template>
         <ol class="flex justify-around">
             <li 
                 @click="store.toggle(1)" 
-                class="flex items-center gap-1 text-xs cursor-pointer hover:bg-gray-800 p-3 rounded-lg"
-                :class="{'bg-gray-800' : store.option == 1}">
+                class="flex items-center gap-1 text-xs cursor-pointer hover:bg-gray-300 hover:dark:bg-gray-800 p-3 rounded-lg"
+                :class="{'bg-gray-300 dark:bg-gray-800' : store.option == 1}">
                 <Icon icon="user-circle" class="text-2xl" />
                 <p>Datos del solicitante</p>
             </li>
             <li 
                 @click="store.toggle(2)" 
-                class="flex items-center gap-1 text-xs cursor-pointer hover:bg-gray-800 p-3 rounded-lg"
-                :class="{'bg-gray-800' : store.option == 2}">
+                class="flex items-center gap-1 text-xs cursor-pointer hover:bg-gray-300 hover:dark:bg-gray-800 p-3 rounded-lg"
+                :class="{'bg-gray-300 dark:bg-gray-800' : store.option == 2}">
                 <Icon icon="map-location-dot" class="text-2xl" />
                 <p>Espacio solicitado</p>
             </li>
             <li 
                 @click="store.toggle(3)" 
-                class="flex items-center gap-1 text-xs cursor-pointer hover:bg-gray-800 p-3 rounded-lg"
-                :class="{'bg-gray-800' : store.option == 3}">
+                class="flex items-center gap-1 text-xs cursor-pointer hover:bg-gray-300 hover:dark:bg-gray-800 p-3 rounded-lg"
+                :class="{'bg-gray-300 dark:bg-gray-800' : store.option == 3}">
                 <Icon icon="file" class="text-2xl" />
                 <p>Documentos subidos</p>
             </li>
             <li
                 @click="store.toggle(4)" 
-                class="flex items-center gap-1 text-xs cursor-pointer hover:bg-gray-800 p-3 rounded-lg"
-                :class="{'bg-gray-800' : store.option == 4}">
-                <Icon icon="user-shield" class="text-2xl" />
-                <p>Autorizaciones</p>
+                class="flex items-center gap-1 text-xs cursor-pointer hover:bg-gray-300 hover:dark:bg-gray-800 p-3 rounded-lg"
+                :class="{'bg-gray-300 dark:bg-gray-800' : store.option == 4}">
+                <Icon icon="arrows-rotate" class="text-2xl" />
+                <p>Cambiar estado</p>
             </li>
         </ol>
         <hr>

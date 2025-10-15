@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
+use App\Models\Permission;
 
 class PermissionsController extends Controller
 {
@@ -13,17 +13,17 @@ class PermissionsController extends Controller
      */
     public function index() {
         try {
-            $permissions = Permission::all();
+            $permissions = Permission::latest('id')->get();
 
             return response([
-                'permission' => $permissions,
+                'permissions' => $permissions,
                 'message' => 'Get all permissions successfully.'
             ]);
         } catch (\Throwable $th) {
             return response([
                 'error' => $th->getMessage(),
                 'message' => 'Failed to get permissions.'
-            ]);
+            ],500);
         }
     }
 
@@ -34,16 +34,15 @@ class PermissionsController extends Controller
         
         $request->validate([
             'name' => 'required|string|unique:permissions,name',
-            'app' => 'required|string',
-            'group' => 'required|string',
+            'module' => 'required|string|max:255',
+
         ]);
 
         try {
             $permission = Permission::create([
-                'name' => $request->name,
+                'name' => mb_strtolower(trim($request->name)),
+                'module' => mb_strtolower(trim($request->module)),
                 'guard_name' => 'web',
-                'app' => $request->app,
-                'group' => $request->group,
             ]);
 
             return response([
@@ -54,7 +53,7 @@ class PermissionsController extends Controller
             return response([
                 'error' => $th->getMessage(),
                 'message' => 'Error created permission.'
-            ]);
+            ],500);
         }
     }
 
@@ -65,17 +64,15 @@ class PermissionsController extends Controller
     public function update(Request $request, Permission $permission) {
 
          $request->validate([
-            'name' => 'required|string|unique:permissions,name',
-            'app' => 'required|string',
-            'group' => 'required|string',
+            'name' => 'required|string|unique:permissions,name,'.$permission->id,
+            'module' => 'required|string|max:255',
         ]);
 
         try {
            
-            $permission->name = $request->name;
+            $permission->name = mb_strtolower(trim($request->name));
+            $permission->module = mb_strtolower(trim($request->module));
             $permission->guard_name = 'web';
-            $permission->app = $request->app;
-            $permission->group = $request->group;
             $permission->save();
 
             return response([
@@ -86,7 +83,7 @@ class PermissionsController extends Controller
             return response([
                 'error' => $th->getMessage(),
                 'message' => 'Error updated permission.'
-            ]);
+            ],500);
         }
     }
 
@@ -104,7 +101,7 @@ class PermissionsController extends Controller
             return response([
                 'error' => $th->getMessage(),
                 'message' => 'Failed deleted permission.'
-            ]);
+            ],500);
         }
     }
 }

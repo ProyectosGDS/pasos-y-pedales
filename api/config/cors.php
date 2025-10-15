@@ -20,7 +20,7 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://192.168.20.116:5173'
+        env('JWT_RECEIVER_PRINCIPAL','http://localhost')
     ],
 
     'allowed_origins_patterns' => [],

@@ -1,6 +1,7 @@
 <script setup>
-    import { onMounted } from 'vue';
+    import { onMounted } from 'vue'
     import { usePagesStore } from '@/stores/admin/pages'
+    import { can, hasErrorField } from '@/helpers'
     const store = usePagesStore()
 
     onMounted(() => {
@@ -9,10 +10,10 @@
     })
 </script>
 <template>
-    <div class="flex justify-center">
+    <div v-if="can('store page')" class="flex justify-center">
         <Button @click="store.modal.new = true" text="New page" icon="plus" class="btn-primary" />
     </div>
-    <Data-Table :headers="store.headers" :data="store.pages" :loading="store.loading.fetch">
+    <Data-Table v-if="can('view list pages')" :headers="store.headers" :data="store.pages" :loading="store.loading.fetch">
         <template #preview="{item}">
             <Icon :icon="item.icon" class="text-xl text-gray-400" />
         </template>
@@ -24,8 +25,8 @@
                 icon="ellipsis-vertical" 
                 variant="btn-alternative"
                 :items="[
-                    { label : 'Edit', icon : 'edit', action : () => store.edit(item) },
-                    { label : 'Delete', icon : 'trash', action : () => store.deleteItem(item) },
+                    { label : 'Edit', icon : 'edit', action : () => store.edit(item), can : can('edit page') },
+                    { label : 'Delete', icon : 'trash', action : () => store.deleteItem(item), can : can('delete page') },
                 ]"
             />
         </template>
@@ -38,11 +39,11 @@
         </template>
 
         <div class="grid lg:grid-cols-2 gap-4">
-            <Input v-model="store.page.label" label="Label" required />
-            <Input v-model="store.page.route" label="Route" />
-            <Input v-model="store.page.order" label="Order" type="number" min="1" />
+            <Input v-model="store.page.label" label="Label" required :error="hasErrorField(store.errors,'label')" />
+            <Input v-model="store.page.route" label="Route" :error="hasErrorField(store.errors,'route')" />
+            <Input v-model="store.page.order" label="Order" type="number" min="1" :error="hasErrorField(store.errors,'order')" />
             <div class="flex items-center gap-3">
-                <Input v-model="store.page.icon" label="Icon" />
+                <Input v-model="store.page.icon" label="Icon" :error="hasErrorField(store.errors,'icon')" />
                 <Icon :icon="store.page.icon" class="flex-1 text-2xl" />
             </div>
             
@@ -55,14 +56,16 @@
                     { label : 'page', value : 'page'}
                 ]"
                 placeholder="Selected page type"
-                return-type="value"
+                return-type="value" 
+                :error="hasErrorField(store.errors,'type')"
             />
             <Select 
                 v-model="store.page.page_id" 
                 label="Parents" 
                 :options="store.parents"
                 placeholder="Select parent"
-                return-type="value"
+                return-type="value" 
+                :error="hasErrorField(store.errors,'page_id')"
             />
             
         </div>
@@ -80,11 +83,11 @@
         </template>
 
         <div class="grid lg:grid-cols-2 gap-4">
-            <Input v-model="store.page.label" label="Label" required />
-            <Input v-model="store.page.route" label="Route" />
-            <Input v-model="store.page.order" label="Order" type="number" min="1" />
+            <Input v-model="store.page.label" label="Label" required :error="hasErrorField(store.errors,'label')" />
+            <Input v-model="store.page.route" label="Route" :error="hasErrorField(store.errors,'route')" />
+            <Input v-model="store.page.order" label="Order" type="number" min="1" :error="hasErrorField(store.errors,'order')" />
             <div class="flex items-center gap-3">
-                <Input v-model="store.page.icon" label="Icon" />
+                <Input v-model="store.page.icon" label="Icon" :error="hasErrorField(store.errors,'icon')" />
                 <Icon :icon="store.page.icon" class="flex-1 text-2xl" />
             </div>
             
@@ -97,14 +100,16 @@
                     { label : 'page', value : 'page'}
                 ]"
                 placeholder="Selected page type"
-                return-type="value"
+                return-type="value" 
+                :error="hasErrorField(store.errors,'type')"
             />
             <Select 
                 v-model="store.page.page_id" 
                 label="Parents" 
                 :options="store.parents"
                 placeholder="Select parent"
-                return-type="value"
+                return-type="value" 
+                :error="hasErrorField(store.errors,'page_id')"
             />
             
         </div>

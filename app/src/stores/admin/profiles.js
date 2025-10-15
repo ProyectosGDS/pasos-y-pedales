@@ -3,20 +3,20 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { hasChanged, setToast } from '@/helpers'
 
-export const useMenusStore = defineStore('menus', () => {
+export const useProfilesStore = defineStore('profiles', () => {
 
     const headers = [
         { title : 'id', key : 'id', type : 'numeric' },
         { title : 'name', key : 'name' },
+        { title : 'description', key : 'description' },
+        { title : 'menu', key : 'menu.name' },
+        { title : 'role', key : 'role.name' },
         { title : 'status', key : 'state' },
-        { title : '', key : 'actions', width : '100px' },
+        { title : '', key : 'actions', width : '100px', class : 'text-end' },
     ]
-    const menus = ref([])
-    const pages = ref([])
-    const selectedPages = ref([])
-    const copy_selectedPages = ref([])
-    const menu = ref({})
-    const copy_menu = ref({})
+    const profiles = ref([])
+    const profile = ref({})
+    const copy_profile = ref({})
     const loading = ref({
         fetch : false,
         store : false,
@@ -33,20 +33,8 @@ export const useMenusStore = defineStore('menus', () => {
     const fetch = async() => {
         loading.value.fetch = true
         try {
-            const response = await axios.get('/admin/menu')
-            menus.value = response.data.menus
-        } catch (error) {
-
-        } finally {
-            loading.value.fetch = false
-        }
-    }
-
-    const getPages = async() => {
-        loading.value.fetch = true
-        try {
-            const response = await axios.get('/admin/page')
-            pages.value = response.data.pages
+            const response = await axios.get('/admin/profile')
+            profiles.value = response.data.profiles
         } catch (error) {
 
         } finally {
@@ -57,12 +45,9 @@ export const useMenusStore = defineStore('menus', () => {
     const store = async() => {
         loading.value.store = true
         try {
-            const response = await axios.post('/admin/menu',{
-                name : menu.value.name,
-                pages : selectedPages.value
-            })
+            const response = await axios.post('/admin/profile',profile.value)
             setToast(response.data.message,'success')
-            menus.value.unshift(response.data.menu)
+            profiles.value.unshift(response.data.profile)
             resetData()
         } catch (error) {
             if(error.response.status == 422) {
@@ -74,21 +59,16 @@ export const useMenusStore = defineStore('menus', () => {
     }
 
     const edit = (item) => {
-        menu.value = item
-        copy_menu.value = JSON.parse(JSON.stringify(item))
-        selectedPages.value = menu.value.pages.map(page => page.id)
-        copy_selectedPages.value = JSON.parse(JSON.stringify(selectedPages.value))
+        profile.value = item
+        copy_profile.value = JSON.parse(JSON.stringify(item))
         modal.value.edit = true
     }
 
     const update = async() => {
         loading.value.update = true
         try {
-            if(hasChanged(menu.value, copy_menu.value) || hasChanged(selectedPages.value, copy_selectedPages.value)) {
-                const response = await axios.put('/admin/menu/' + menu.value.id,{
-                    name : menu.value.name,
-                    pages : selectedPages.value
-                })
+            if(hasChanged(profile.value, copy_profile.value)) {
+                const response = await axios.put('/admin/profile/' + profile.value.id,profile.value)
                 setToast(response.data.message,'success')
             }
             resetData()
@@ -102,7 +82,7 @@ export const useMenusStore = defineStore('menus', () => {
     }
 
     const deleteItem = (item) => {
-        menu.value = item
+        profile.value = item
         modal.value.delete = true
     }
 
@@ -110,12 +90,12 @@ export const useMenusStore = defineStore('menus', () => {
         loading.value.destroy = true
         try {
             
-            const response = await axios.delete('/admin/menu/' + menu.value.id)
+            const response = await axios.delete('/admin/profile/' + profile.value.id)
             
-            const index = menus.value.findIndex(menu => menu.id === response.data.menu.id)
+            const index = profiles.value.findIndex(profile => profile.id === response.data.profile.id)
 
             if (index !== -1) {
-                menus.value.splice(index, 1)
+                profiles.value.splice(index, 1)
             }
 
             setToast(response.data.message,'success')
@@ -129,33 +109,26 @@ export const useMenusStore = defineStore('menus', () => {
         }
     }
 
-
     const resetData = () => {
-        menu.value = {}
-        copy_menu.value = {}
+        profile.value = {}
+        copy_profile.value = {}
         modal.value = {
             new : false,
             edit : false,
             delete : false,
         }
-        selectedPages.value = []
-        copy_selectedPages.value = []
         errors.value = []
     }
     
     return {
         headers,
-        menus,
-        pages,
-        selectedPages,
-        copy_selectedPages,
-        menu,
+        profiles,
+        profile,
         loading,
         modal,
         errors,
 
         fetch,
-        getPages,
         store,
         edit,
         update,

@@ -1,50 +1,57 @@
 <script setup>
-import Logo from '@/components/Logo.vue'
-import { useRouter, useRoute } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-import { ref, watch } from 'vue'
+    import Logo from '@/components/Logo.vue'
+    import { useRouter, useRoute } from 'vue-router'
+    import { useAuthStore } from '@/stores/auth'
+    import { ref, watch } from 'vue'
+    import { onClickOutside } from '@vueuse/core'
 
-const auth = useAuthStore()
-const router = useRouter()
-const route = useRoute()
+    const auth = useAuthStore()
+    const router = useRouter()
+    const route = useRoute()
 
-const openParentId = ref(null)
-
-const toggleParent = (parentId) => {
-    openParentId.value = openParentId.value === parentId ? null : parentId
-}
-
-
-const handleLogout = () => {
-    auth.logout()
-    router.push({ name : 'Login'})
-}
-
-watch(() => route.name, (newRouteName) => {
-    const parent = auth.userMenu.find(menu => 
-        menu.childrens?.some(child => child.route === newRouteName)
-    )
-
-    if (parent && openParentId.value !== parent.id) {
-        openParentId.value = parent.id
-    } else if (!parent && openParentId.value !== null) {
-         openParentId.value = null 
+    const openParentId = ref(null)
+    const openSidebar = ref(false)
+    const sidebarRef = ref(null)
+    const toggleParent = (parentId) => {
+        openParentId.value = openParentId.value === parentId ? null : parentId
     }
-}, { immediate: true })
+
+    onClickOutside(sidebarRef, () => {
+        if (openSidebar.value) openSidebar.value = false
+    })
+
+    const handleLogout = () => {
+        auth.logout()
+        router.push({ name : 'Login'})
+    }
+
+    watch(() => route.name, (newRouteName) => {
+        const parent = auth.userMenu.find(menu => 
+            menu.childrens?.some(child => child.route === newRouteName)
+        )
+
+        if (parent && openParentId.value !== parent.id) {
+            openParentId.value = parent.id
+        } else if (!parent && openParentId.value !== null) {
+            openParentId.value = null 
+        }
+    }, { immediate: true })
 
 </script>
 
 <template>
-    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar"
-        type="button"
-        class="inline-flex items-center p-2 mt-2 ms-3 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
-        <span class="sr-only">Abrir barra lateral</span>
-        <Icon icon="bars" />
-    </button>
+    <Button
+        icon="bars"
+        class="btn-primary ml-4 mt-4 sm:hidden"
+        @click="openSidebar = !openSidebar"
+    />
 
-    <nav id="logo-sidebar"
+    <aside ref="sidebarRef" 
         class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
-        aria-label="Sidebar">
+        :class="{
+            '-translate-x-full': !openSidebar,
+            'translate-x-0': openSidebar
+        }">
         <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <RouterLink :to="{name : 'Home'}">
                 <Logo class="h-[3.4rem] w-auto fill-gray-800 dark:fill-gray-200" />
@@ -57,8 +64,8 @@ watch(() => route.name, (newRouteName) => {
                     <li v-else-if="page.type == 'parent' && page.childrens?.length > 0">
                         <button 
                             @click="toggleParent(page.id)" 
-                            class="flex items-center w-full p-2 text-base cursor-pointer text-gray-700 transition duration-75 rounded-lg group hover:bg-gray-400 dark:text-white dark:hover:bg-gray-700"
-                            :class="{'bg-gray-300 dark:bg-gray-700': openParentId === page.id}"> 
+                            class="flex items-center w-full p-2 text-base cursor-pointer text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-00 dark:text-white dark:hover:bg-gray-700"
+                            :class="{'bg-gray-400 dark:bg-gray-700': openParentId === page.id}"> 
                             <Icon :icon="page.icon" />
                             <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
                                 {{ page.label }}
@@ -70,8 +77,8 @@ watch(() => route.name, (newRouteName) => {
                             <li v-for="child in page.childrens" :key="child.id">
                                 <RouterLink 
                                     :to="{ name : child.route}" 
-                                    class="flex items-center w-full p-2 text-base text-gray-700 transition duration-75 rounded-lg group hover:bg-gray-400 dark:text-white dark:hover:bg-gray-700"
-                                    :class="{'bg-gray-300 dark:bg-gray-700': route.name === child.route}"> 
+                                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-400 dark:text-white dark:hover:bg-gray-700"
+                                    :class="{'bg-gray-400 dark:bg-gray-700': route.name === child.route}"> 
                                     <Icon :icon="child.icon" />
                                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
                                         {{ child.label }}
@@ -84,8 +91,8 @@ watch(() => route.name, (newRouteName) => {
                     <li v-else>
                         <RouterLink 
                             :to="{ name : page.route}" 
-                            class="flex cursor-pointer items-center p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group" 
-                            :class="{'bg-gray-100 dark:bg-gray-700': route.name === page.route}">
+                            class="flex cursor-pointer items-center p-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-700 group" 
+                            :class="{'bg-gray-400 dark:bg-gray-700': route.name === page.route}">
                             <Icon :icon="page.icon" />
                             <span class="ms-3">{{ page.label }}</span>
                         </RouterLink>
@@ -105,13 +112,13 @@ watch(() => route.name, (newRouteName) => {
                 variant="btn-light"
             />
         </div>
-    </nav>
+    </aside>
 </template>
 
 <style scoped>
-@reference 'tailwindcss';
+    @reference 'tailwindcss';
 
-:deep(svg) {
-    @apply transition duration-75;
-}
+    :deep(svg) {
+        @apply transition duration-75 ;
+    }
 </style>

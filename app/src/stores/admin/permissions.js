@@ -3,20 +3,18 @@ import { ref } from 'vue'
 import axios from 'axios'
 import { hasChanged, setToast } from '@/helpers'
 
-export const useMenusStore = defineStore('menus', () => {
+export const usePermissionsStore = defineStore('permissions', () => {
 
     const headers = [
         { title : 'id', key : 'id', type : 'numeric' },
         { title : 'name', key : 'name' },
-        { title : 'status', key : 'state' },
-        { title : '', key : 'actions', width : '100px' },
+        { title : 'module', key : 'module' },
+        { title : 'guard', key : 'guard_name' },
+        { title : '', key : 'actions', width : '100px', class : 'text-end' },
     ]
-    const menus = ref([])
-    const pages = ref([])
-    const selectedPages = ref([])
-    const copy_selectedPages = ref([])
-    const menu = ref({})
-    const copy_menu = ref({})
+    const permissions = ref([])
+    const permission = ref({})
+    const copy_permission = ref({})
     const loading = ref({
         fetch : false,
         store : false,
@@ -33,20 +31,8 @@ export const useMenusStore = defineStore('menus', () => {
     const fetch = async() => {
         loading.value.fetch = true
         try {
-            const response = await axios.get('/admin/menu')
-            menus.value = response.data.menus
-        } catch (error) {
-
-        } finally {
-            loading.value.fetch = false
-        }
-    }
-
-    const getPages = async() => {
-        loading.value.fetch = true
-        try {
-            const response = await axios.get('/admin/page')
-            pages.value = response.data.pages
+            const response = await axios.get('/admin/permission')
+            permissions.value = response.data.permissions
         } catch (error) {
 
         } finally {
@@ -57,12 +43,9 @@ export const useMenusStore = defineStore('menus', () => {
     const store = async() => {
         loading.value.store = true
         try {
-            const response = await axios.post('/admin/menu',{
-                name : menu.value.name,
-                pages : selectedPages.value
-            })
+            const response = await axios.post('/admin/permission',permission.value)
             setToast(response.data.message,'success')
-            menus.value.unshift(response.data.menu)
+            permissions.value.unshift(response.data.permission)
             resetData()
         } catch (error) {
             if(error.response.status == 422) {
@@ -74,21 +57,16 @@ export const useMenusStore = defineStore('menus', () => {
     }
 
     const edit = (item) => {
-        menu.value = item
-        copy_menu.value = JSON.parse(JSON.stringify(item))
-        selectedPages.value = menu.value.pages.map(page => page.id)
-        copy_selectedPages.value = JSON.parse(JSON.stringify(selectedPages.value))
+        permission.value = item
+        copy_permission.value = JSON.parse(JSON.stringify(item))
         modal.value.edit = true
     }
 
     const update = async() => {
         loading.value.update = true
         try {
-            if(hasChanged(menu.value, copy_menu.value) || hasChanged(selectedPages.value, copy_selectedPages.value)) {
-                const response = await axios.put('/admin/menu/' + menu.value.id,{
-                    name : menu.value.name,
-                    pages : selectedPages.value
-                })
+            if(hasChanged(permission.value, copy_permission.value)) {
+                const response = await axios.put('/admin/permission/' + permission.value.id, permission.value)
                 setToast(response.data.message,'success')
             }
             resetData()
@@ -102,7 +80,7 @@ export const useMenusStore = defineStore('menus', () => {
     }
 
     const deleteItem = (item) => {
-        menu.value = item
+        permission.value = item
         modal.value.delete = true
     }
 
@@ -110,12 +88,12 @@ export const useMenusStore = defineStore('menus', () => {
         loading.value.destroy = true
         try {
             
-            const response = await axios.delete('/admin/menu/' + menu.value.id)
+            const response = await axios.delete('/admin/permission/' + permission.value.id)
             
-            const index = menus.value.findIndex(menu => menu.id === response.data.menu.id)
+            const index = permissions.value.findIndex(permission => permission.id === response.data.permission.id)
 
             if (index !== -1) {
-                menus.value.splice(index, 1)
+                permissions.value.splice(index, 1)
             }
 
             setToast(response.data.message,'success')
@@ -129,33 +107,27 @@ export const useMenusStore = defineStore('menus', () => {
         }
     }
 
-
     const resetData = () => {
-        menu.value = {}
-        copy_menu.value = {}
+        permission.value = {}
+        copy_permission.value = {}
         modal.value = {
             new : false,
             edit : false,
             delete : false,
         }
-        selectedPages.value = []
-        copy_selectedPages.value = []
         errors.value = []
     }
     
     return {
         headers,
-        menus,
-        pages,
-        selectedPages,
-        copy_selectedPages,
-        menu,
+        permissions,
+        permissions,
+        permission,
         loading,
         modal,
         errors,
 
         fetch,
-        getPages,
         store,
         edit,
         update,

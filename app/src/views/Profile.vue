@@ -44,7 +44,7 @@
                     >
                     <Upload v-if="store.change"
                         accept="image/*" 
-                        @sendFile="store.getFile" 
+                        v-model="store.picture"
                         class="mb-4 rounded-lg w-28 h-28 sm:mb-0 xl:mb-4 2xl:mb-0" 
                     />
                     <div>

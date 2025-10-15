@@ -14,7 +14,7 @@ class ProfileController extends Controller
     public function index() {
         try {
             return response([
-                'profiles' => Profile::all(),
+                'profiles' => Profile::with(['menu','role'])->latest('id')->get(),
                 'message' => 'Get all profiles successfully.'
             ]);
         } catch (\Throwable $th) {

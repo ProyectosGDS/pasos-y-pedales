@@ -72,14 +72,11 @@ class User extends Authenticatable
 
     public function getPermissionsAttribute() {
 
-        $appHeader = request()->header('App');
         $permissions = [];
 
-        if ($this->profile && $this->profile->rol) {
-            foreach ($this->profile->rol->permissions as $permission) {
-                if ($permission->app === $appHeader) {
-                    $permissions[] = $permission->name;
-                }
+        if ($this->profile && $this->profile->role) {
+            foreach ($this->profile->role->permissions as $permission) {
+                $permissions[] = $permission->name;
             }
         }
 

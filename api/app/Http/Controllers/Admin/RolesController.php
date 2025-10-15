@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Permission;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Role;
 
@@ -13,8 +14,10 @@ class RolesController extends Controller
      */
     public function index() {
         try {
-            $roles = Role::all();
+            $roles = Role::with('permissions')->latest('id')->get();
+            $permissions = Permission::get()->groupBy('module');
             return response([
+                'permissions' => $permissions,
                 'roles' => $roles,
                 'message' => 'Get all roles successfully.'
             ]);
@@ -57,13 +60,16 @@ class RolesController extends Controller
      */
     public function update(Request $request, Role $role) {
         $request->validate([
-            'name' => 'required|string|max:255|unique:roles,name,'.$role->id
+            'name' => 'required|string|max:255|unique:roles,name,'.$role->id,
+            'permissions' => 'array'
         ]);
 
         try {
 
             $role->name = $request->name;
             $role->save();
+
+            $role->syncPermissions($request->permissions ?? []);
 
             return response([
                 'role' => $role,

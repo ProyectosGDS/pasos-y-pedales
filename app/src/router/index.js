@@ -38,7 +38,7 @@ const routes = [
                         component: () => import('@/views/admin/Users.vue'),
                         meta : {
                             requiresAuth : true
-                        } 
+                        }
                     },
                     { 
                         path: 'users/edit/:id', 
@@ -68,7 +68,23 @@ const routes = [
                     { 
                         path: 'roles', 
                         name: 'Roles', 
-                        component: () => import('@/views/admin/Menus.vue'),
+                        component: () => import('@/views/admin/Roles.vue'),
+                        meta : {
+                            requiresAuth : true
+                        } 
+                    },
+                    { 
+                        path: 'permissions', 
+                        name: 'Permissions', 
+                        component: () => import('@/views/admin/Permissions.vue'),
+                        meta : {
+                            requiresAuth : true
+                        } 
+                    },
+                    { 
+                        path: 'profiles', 
+                        name: 'Profiles', 
+                        component: () => import('@/views/admin/Profiles.vue'),
                         meta : {
                             requiresAuth : true
                         } 

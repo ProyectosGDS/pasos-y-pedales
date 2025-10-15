@@ -21,7 +21,6 @@ import Select from './components/Select.vue'
 import DataTableServerSide from './components/DataTable/DataTableServerSide.vue'
 import DataTable from './components/DataTable/DataTable.vue'
 import TextArea from './components/TextArea.vue'
-import FileInput from './components/FileInput.vue'
 import Toggle from './components/Toggle.vue'
 
 const app = createApp(App)
@@ -33,7 +32,6 @@ library.add(fab)
 app.component('Icon',FontAwesomeIcon)
 .component('Button', Button)
 .component('Input',Input)
-.component('File-Input',FileInput)
 .component('Text-Area',TextArea)
 .component('Toggle',Toggle)
 .component('Select', Select)

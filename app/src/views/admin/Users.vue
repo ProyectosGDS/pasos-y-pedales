@@ -1,7 +1,7 @@
 <script setup>
     import { onMounted } from 'vue'
     import { useUsersStore } from '@/stores/admin/users'
-    import { formatVal, hasErrorField } from '@/helpers'
+    import { can, formatVal, hasErrorField } from '@/helpers'
     import Avatar from '@/components/Avatar.vue'
     import { useRouter } from 'vue-router'
 
@@ -13,11 +13,11 @@
     })
 </script>
 <template>
-    <div class="flex justify-center">
+    <div v-if="can('store user')" class="flex justify-center">
         <Button @click="store.modal.new = true" text="New user" icon="plus" class="btn-primary" />
     </div>
 
-    <Data-Table :headers="store.headers" :data="store.users" :loading="store.loading.fetch">
+    <Data-Table v-if="can('view list users')" :headers="store.headers" :data="store.users" :loading="store.loading.fetch">
         <template #tbody="{items}">
             <tr v-for="item in items" 
                 @click="router.push({ name : 'User edit', params : { id : item.id } })"
@@ -82,7 +82,7 @@
                 <Icon icon="person-dress" class="text-fuchsia-500" />
             </div>
             <div class="col-span-2">
-                <Select v-model="store.user.profile.id"
+                <Select v-model="store.user.profile_id"
                     label="Profile"
                     icon="id-card-clip"
                     :options="[

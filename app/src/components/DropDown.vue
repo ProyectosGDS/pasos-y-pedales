@@ -77,13 +77,15 @@ watchEffect(() => {
 				}">
 				<template v-if="props.items">
 					<ul class="p-2 text-sm text-gray-700 dark:text-gray-200">
-						<li v-for="(item, i) in props.items" :key="i">
-							<a href="#" @click.prevent="item.action?.()"
-								class="flex items-center rounded-xl gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-								<Icon v-if="item.icon" :icon="item.icon" />
-								{{ item.label }}
-							</a>
-						</li>
+						<template v-for="(item, i) in props.items">
+							<li v-if="item.can ?? true" :key="i">
+								<a href="#" @click.prevent="item.action?.()"
+									class="flex items-center rounded-xl gap-2 px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
+									<Icon v-if="item.icon" :icon="item.icon" />
+									{{ item.label }}
+								</a>
+							</li>
+						</template>
 					</ul>
 				</template>
 

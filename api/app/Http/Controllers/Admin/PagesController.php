@@ -57,8 +57,8 @@ class PagesController extends Controller
             'icon' => 'nullable|string|max:255',
             'route' => 'nullable|string|max:255',
             'order' => 'nullable|integer|min:1',
-            'type' => 'required|in:header,parent,page',
-            'page_id' => 'nullable|integer|exists:pages,id'
+            'page_id' => 'required|integer|exists:pages,id',
+            'type' => 'required|in:header,parent,page'
 
         ]);
 
@@ -68,7 +68,7 @@ class PagesController extends Controller
                 'icon' => $request->icon ?? 'circle',
                 'route' => $request->route ?? '',
                 'order' => $request->order ?? null,
-                'page_id' => $request->page_id ?? null,
+                'page_id' => $request->page_id,
                 'type' => $request->type,
             ]);
 
@@ -109,7 +109,7 @@ class PagesController extends Controller
             'route' => 'nullable|string|max:255',
             'order' => 'nullable|integer|min:1',
             'type' => 'required|in:header,parent,page',
-            'page_id' => 'nullable|integer|exists:pages,id',
+            'page_id' => 'required_if:type,page|nullable|integer|exists:pages,id',
 
         ]);
 
@@ -119,7 +119,7 @@ class PagesController extends Controller
             $page->icon = $request->icon ?? 'circle';
             $page->route = $request->route ?? '';
             $page->order = $request->order ?? null;
-            $page->page_id = $request->page_id ?? null;
+            $page->page_id = $request->page_id;
             $page->type = $request->type;
             $page->save();
 

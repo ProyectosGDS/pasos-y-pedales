@@ -17,6 +17,6 @@ Route::get('page/get-parents',[PagesController::class,'getParents']);
 Route::apiResource('page',PagesController::class);
 
 Route::apiResource('menu',MenusController::class);
-Route::apiResource('profiles',ProfileController::class)->except(['show']);
+Route::apiResource('profile',ProfileController::class)->except(['show']);
 Route::apiResource('role',RolesController::class)->except(['show']);
 Route::apiResource('permission',PermissionsController::class)->except(['show']);

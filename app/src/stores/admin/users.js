@@ -18,7 +18,7 @@ export const useUsersStore = defineStore('users', () => {
     const users = ref([])
     
     const user = ref({
-        information : {},
+        information : {}
     })
     const copy_user = ref({})
     const profiles = ref([])
@@ -46,7 +46,7 @@ export const useUsersStore = defineStore('users', () => {
     const getProfiles = async() => {
         loading.value.fetch = true
         try {
-            const response = await axios.get('/admin/profiles')
+            const response = await axios.get('/admin/profile')
             profiles.value = response.data.profiles.map(profile => {
                 return {
                     label : profile.name,
@@ -200,7 +200,6 @@ export const useUsersStore = defineStore('users', () => {
     const resetData = () => {
         user.value = {
             information : {},
-            profile : {}
         }
         copy_user.value = {}
         modal.value = {

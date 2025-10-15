@@ -324,7 +324,6 @@ import { formatVal, getNestedValue } from '@/helpers'
                 </slot>
             </template>
         </Table>
-        
         <div class="flex justify-between">
             <div class="flex gap-3 text-xs">
                 <span>Mostrando</span>

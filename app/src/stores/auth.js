@@ -80,7 +80,7 @@ export const useAuthStore = defineStore('auth', () => {
         try {
             const response = await axios.get('auth/verify-auth')
             user.value = response.data.user
-            userPermissions.value = response.data.user.permisos || []
+            userPermissions.value = response.data.user.permissions || []
             userMenu.value = response.data.user.menu || []
             return true
         } catch (error) {

@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->foreignId('menu_id')->constrained();
             $table->foreignId('page_id')->constrained();
-            $table->timestamps();
         });
     }
 

@@ -15,7 +15,7 @@ const breadcrumb = computed(() => {
                 <div class="flex items-center">
                     <Icon :icon="key == 0 ? 'house' :'chevron-right'"/>
                     <a href="#" class="ms-1 font-medium text-gray-700 hover:text-blue-600 md:ms-2 dark:text-gray-400 dark:hover:text-white">
-                        {{ key == 0 ? 'Home' : item }}
+                        {{ key == 0 ? 'Home' : item.charAt(0).toUpperCase() + item.slice(1) }}
                     </a>
                 </div>
             </li>
