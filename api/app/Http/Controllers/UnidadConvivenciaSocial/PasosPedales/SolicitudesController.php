@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\UnidadConvivenciaSocial\PasosPedales;
 
 use App\Http\Controllers\Controller;
+use App\Mail\UnidadConvivenciaSocial\PasosPedales\Solicitudes\NotificacionSolicitud;
 use App\Models\UnidadConvivenciaSocial\PasosPedales\Expediente;
 use App\Models\UnidadConvivenciaSocial\PasosPedales\Solicitud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rule;
 
 class SolicitudesController extends Controller
@@ -195,6 +197,8 @@ class SolicitudesController extends Controller
                 'user_id' => Auth::user()->id,
                 'estado_id' => 2,
             ]);
+
+            // Mail::to('nelson.o.vasquez@gmail.com')->send(new NotificacionSolicitud());
 
             return response([
                 'expediente' => $expediente,

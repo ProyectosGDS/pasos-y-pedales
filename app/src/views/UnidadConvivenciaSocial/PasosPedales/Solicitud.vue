@@ -14,7 +14,7 @@
 </script>
 <template>
     <div>
-        <ol class="flex items-center w-full p-3 space-x-2 text-sm font-medium text-center text-gray-500 bg-white border border-gray-200 rounded-lg shadow-xs dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
+        <ol class="flex items-center w-full p-3 space-x-2 text-sm font-medium text-center  bg-white border border-gray-200 rounded-lg shadow-xs dark:text-gray-400 sm:text-base dark:bg-gray-800 dark:border-gray-700 sm:p-4 sm:space-x-4 rtl:space-x-reverse">
             <li @click="store.toggle(1)" class="flex items-center cursor-pointer" :class="{ 'text-blue-600 dark:text-blue-500' : store.option == 1 }">
                 <span
                     class="flex items-center justify-center w-5 h-5 me-2 text-xs border shrink-0 rounded-full" :class="store.option == 1 ? 'border-blue-600 rounded-full dark:border-blue-500' : 'border-gray-500 dark:border-gray-400'">
@@ -51,7 +51,7 @@
         <div>
             <fieldset v-if="store.option == 1" class="border-2 p-8 rounded-lg dark:border-gray-500">
                 <legend class="px-3">DATOS DEL SOLICITANTE</legend>
-                <div class="lg:grid lg:grid-cols-2 gap-4 space-y-4">
+                <div class="lg:grid lg:grid-cols-2 gap-y-4 gap-x-12 ">
                     <Input v-model="store.solicitud.primer_nombre" label="Primer nombre" maxlength="50" icon="edit" required :error="hasErrorField(store.errors,'primer_nombre')" />
                     <Input v-model="store.solicitud.segundo_nombre" label="Segundo nombre" maxlength="50" icon="edit" required :error="hasErrorField(store.errors,'segundo_nombre')" />
                     <Input v-model="store.solicitud.primer_apellido" label="Primer apellido" maxlength="50" icon="edit" required :error="hasErrorField(store.errors,'primer_apellido')" />
@@ -113,7 +113,7 @@
 
             <fieldset v-if="store.option == 3" class="border-2 p-8 rounded-lg dark:border-gray-500 flex gap-4 justify-center">
                 <legend class="px-3">DOCUMENTACIÓN</legend>
-                <div class="grid lg:grid-cols-3 gap-8">
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-8">
                     <div class="grid gap-2 justify-items-center">
                         <label>
                             Carta de solicitud

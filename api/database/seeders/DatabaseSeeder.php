@@ -370,7 +370,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Estado::create([
-            'nombre' => 'Asignación de espacio',
+            'nombre' => 'Espacio asignado',
             'descripcion' => 'Descripcion del estado',
             'tipo' => 'workflow',
             'orden' => 5,
@@ -387,6 +387,13 @@ class DatabaseSeeder extends Seeder
             'descripcion' => 'Descripcion del estado',
             'tipo' => 'workflow',
             'orden' => 7,
+        ]);
+
+        Estado::create([
+            'nombre' => 'Asignacion rechazada',
+            'descripcion' => 'Descripcion del estado',
+            'tipo' => 'workflow',
+            'orden' => 8,
         ]);
 
         

@@ -55,7 +55,7 @@
                     {{ formatVal(item.created_at,'date') }}
                 </td>
                 <td>
-                    {{ item.deleted_at ? 'Inactive' : 'Active' }}
+                    <Badge :text="item.deleted_at ? 'Inactive' : 'Active'" :variant="item.deleted_at ? 'red' : 'green'" />
                 </td>
             </tr>
         </template>

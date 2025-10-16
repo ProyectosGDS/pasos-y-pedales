@@ -302,7 +302,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="px-4 lg:px-7 grid gap-4 text-black dark:text-gray-300">
+    <section class="px-4 lg:px-7  dark:text-gray-300">
         <div class="md:flex md:items-center md:justify-between">
             <div class="inline-flex items-center px-2 py-1.5 gap-2">
                 <span>Mostrar</span>
@@ -380,15 +380,17 @@ onMounted(() => {
         </div>
 
         <!-- Vista móvil -->
-        <div class="grid gap-4 lg:hidden py-4 w-max">
-            <div v-for="item in paginatedData" :key="item.id" class="dark:bg-gray-800 p-2 rounded-xl">
+        <div class="mt-4 lg:hidden grid gap-4">
+            <div v-for="item in paginatedData" 
+                :key="item.id" 
+                class="dark:bg-gray-800 border-2 border-gray-300 dark:border-0 rounded-lg p-2">
                 <table class="w-full">
                     <tr v-if="props.multiple">
                         <td colspan="2">
                             <input class="checkbox" type="checkbox" v-model="selectedRows" :value="item">
                         </td>
                     </tr>
-                    <tr v-for="head in props.headers" :key="head.key" class="hover:bg-gray-700 rounded-lg">
+                    <tr v-for="head in props.headers" :key="head.key" class="dark:hover:bg-gray-700 hover:bg-gray-200 rounded-lg">
                         <td class="px-4 font-semibold uppercase text-sm select-none" 
                             :width="head.width" 
                             align="left" 
@@ -412,82 +414,85 @@ onMounted(() => {
         </div>
 
         <!-- Vista desktop -->
-        <Table class="invisible lg:visible">
-            <template #thead>
-                <tr>
-                    <th v-if="props.multiple">
-                        <input class="checkbox" type="checkbox" ref="selectAll" 
-                            @change="allSelectedRows" 
-                            title="Seleccionar todos">
-                    </th>
-                    <th v-for="head in props.headers" 
-                        :key="head.key" 
-                        @click="sort(head.key, head.type)" 
-                        scope="col" 
-                        :width="head.width" 
-                        :align="head.align ?? 'left'" 
-                        :hidden="head.hidden"
-                        class="cursor-pointer select-none">
-                        <div class="flex gap-1 items-center">
-                            <span v-if="sortColumn === head.key" class="text-xs">
-                                {{ sortDir === 'asc' ? '▲' : '▼' }}
-                            </span>
-                            {{ head.title }}
-                        </div>
-                    </th>
-                </tr>
-            </template>
-            <template #tbody>
-                <slot name="tbody" :items="paginatedData">
-                    <tr v-for="item in paginatedData" 
-                        :key="item.id" 
-                        class="dark:hover:bg-gray-800 hover:bg-gray-200">
-                        <td v-if="props.multiple">
-                            <input class="checkbox" type="checkbox" v-model="selectedRows" :value="item">
-                        </td>
-                        <td v-for="head in props.headers" 
-                            :key="head.key" 
-                            :align="head.align ?? 'left'" 
-                            :width="head.width" 
-                            :hidden="head.hidden">
-                            <slot :name="head.key" :item="item">
-                                <div :class="`uppercase text-xs ${head.class}`">
-                                    <Icon v-if="head.icon" :icon="head.icon" />
-                                    <span>{{ formatVal(getNestedValue(item, head.key), head.type) }} </span>
-                                    <span>{{ head.text ?? '' }}</span>
-                                </div>
-                            </slot>
-                        </td>
-                    </tr>
-                </slot>
-                <tr v-if="props.loading">
-                    <td align="center" :colspan="props.headers.length + (props.multiple ? 1 : 0)" class="px-10">
-                        <LoadingBar class="h-1 bg-color-4" />
-                        <span class="animate-ping">Cargando data...</span>
-                    </td>
-                </tr>
-                <tr v-if="sortedData.length === 0 && !props.loading">
-                    <td align="center" :colspan="props.headers.length + (props.multiple ? 1 : 0)">
-                        No hay datos disponibles
-                    </td>
-                </tr>
-            </template>
-        </Table>
+        <div class="hidden lg:block mt-4">
+             <Table>
+                 <template #thead>
+                     <tr>
+                         <th v-if="props.multiple">
+                             <input class="checkbox" type="checkbox" ref="selectAll" 
+                                 @change="allSelectedRows" 
+                                 title="Seleccionar todos">
+                         </th>
+                         <th v-for="head in props.headers" 
+                             :key="head.key" 
+                             @click="sort(head.key, head.type)" 
+                             scope="col" 
+                             :width="head.width" 
+                             :align="head.align ?? 'left'" 
+                             :hidden="head.hidden"
+                             class="cursor-pointer select-none">
+                             <div class="flex gap-1 items-center">
+                                 <span v-if="sortColumn === head.key" class="text-xs">
+                                     {{ sortDir === 'asc' ? '▲' : '▼' }}
+                                 </span>
+                                 {{ head.title }}
+                                 <Icon v-if="head.key != 'actions'" icon="sort" class="text-[10px]" />
+                             </div>
+                         </th>
+                     </tr>
+                 </template>
+                 <template #tbody>
+                     <slot name="tbody" :items="paginatedData">
+                         <tr v-for="item in paginatedData" 
+                             :key="item.id" 
+                             class="dark:hover:bg-gray-800 hover:bg-gray-200">
+                             <td v-if="props.multiple">
+                                 <input class="checkbox" type="checkbox" v-model="selectedRows" :value="item">
+                             </td>
+                             <td v-for="head in props.headers" 
+                                 :key="head.key" 
+                                 :align="head.align ?? 'left'" 
+                                 :width="head.width" 
+                                 :hidden="head.hidden">
+                                 <slot :name="head.key" :item="item">
+                                     <div :class="`uppercase text-xs ${head.class}`">
+                                         <Icon v-if="head.icon" :icon="head.icon" />
+                                         <span>{{ formatVal(getNestedValue(item, head.key), head.type) }} </span>
+                                         <span>{{ head.text ?? '' }}</span>
+                                     </div>
+                                 </slot>
+                             </td>
+                         </tr>
+                     </slot>
+                     <tr v-if="props.loading">
+                         <td align="center" :colspan="props.headers.length + (props.multiple ? 1 : 0)" class="px-10">
+                             <LoadingBar class="h-1 bg-color-4" />
+                             <span class="animate-ping">Cargando data...</span>
+                         </td>
+                     </tr>
+                     <tr v-if="sortedData.length === 0 && !props.loading">
+                         <td align="center" :colspan="props.headers.length + (props.multiple ? 1 : 0)">
+                             No hay datos disponibles
+                         </td>
+                     </tr>
+                 </template>
+             </Table>
+        </div>
 
         <!-- Paginación -->
-        <div class="flex items-center justify-between pb-4">
+        <div class="flex items-center justify-between pb-4 mt-4">
             <div v-show="sortedData.length >= rowsPerPage && displayedPages.length > 1" 
                 class="flex flex-1 justify-between md:hidden">
-                <button @click="setCurrentPage(currentPage - 1)"
+                <Button @click="setCurrentPage(currentPage - 1)"
                     :disabled="currentPage === 1"
-                    class="relative flex items-center rounded border border-gray-300 select-none cursor-pointer btn px-4 py-2 text-sm font-medium disabled:opacity-50">
-                    Anterior
-                </button>
-                <button @click="setCurrentPage(currentPage + 1)"
+                    class="btn-primary"
+                    text="Anterior"
+                />
+                <Button @click="setCurrentPage(currentPage + 1)"
                     :disabled="currentPage === totalPages"
-                    class="relative ml-3 flex items-center rounded border border-gray-300 select-none cursor-pointer btn px-4 py-2 text-sm font-medium disabled:opacity-50">
-                    Siguiente
-                </button>
+                    class="btn-primary"
+                    text="Siguiente"
+                />
             </div>
 
             <div class="hidden md:flex md:flex-1 sm:items-center sm:justify-between">

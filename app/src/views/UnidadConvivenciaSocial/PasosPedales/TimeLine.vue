@@ -59,10 +59,10 @@
         </template>
     </DataTable-ServerSide>
 
-    <Modal :open="store.modal.timeline" header="Time Line" icon="timeline" size="max-w-3xl">
+    <Modal :open="store.modal.timeline" header="Time Line" icon="timeline">
         <template #closed>
             <Icon @click="store.resetData" icon="xmark"
-                class="cursor-pointer text-xl p-2 hover:bg-gray-800 rounded-lg" />
+                class="cursor-pointer text-xl p-2 hover:bg-gray-300 dark:hover:bg-gray-800 rounded-lg" />
         </template>
         <div class="p-4 h-[30rem] overflow-auto">
             <ol class="border-l relative">

@@ -72,14 +72,14 @@ class Solicitud extends Model
     } 
     
     public function scopeWhereNombreCompleto(Builder $query, $nombre_completo) {
-        $concat = "LOWER(TRIM(CONCAT(
+        $concat = "TRIM(CONCAT(
             solicitudes.primer_nombre, ' ',
             IFNULL(solicitudes.segundo_nombre, ''),
             ' ',
             solicitudes.primer_apellido, ' ',
             IFNULL(solicitudes.segundo_apellido, '')
-        )))";
+        ))";
 
-        return $query->where(DB::raw($concat), 'like', "LOWER(%{$nombre_completo}%)");
+        return $query->where(DB::raw($concat), 'like', "%{$nombre_completo}%");
     }
 }

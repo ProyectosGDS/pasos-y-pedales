@@ -76,7 +76,7 @@ watchEffect(() => {
 					left: x != null ? `${x}px` : ''
 				}">
 				<template v-if="props.items">
-					<ul class="p-2 text-sm text-gray-700 dark:text-gray-200">
+					<ul class="p-2 text-sm dark:text-gray-200">
 						<template v-for="(item, i) in props.items">
 							<li v-if="item.can ?? true" :key="i">
 								<a href="#" @click.prevent="item.action?.()"
@@ -90,7 +90,7 @@ watchEffect(() => {
 				</template>
 
 				<template v-else>
-					<ul class="py-2 text-sm text-gray-700 dark:text-gray-200 px-4">
+					<ul class="py-2 text-sm dark:text-gray-200 px-4">
 						<slot />
 					</ul>
 				</template>

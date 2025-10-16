@@ -22,6 +22,7 @@ import DataTableServerSide from './components/DataTable/DataTableServerSide.vue'
 import DataTable from './components/DataTable/DataTable.vue'
 import TextArea from './components/TextArea.vue'
 import Toggle from './components/Toggle.vue'
+import Badge from './components/Badge.vue'
 
 const app = createApp(App)
 
@@ -30,6 +31,7 @@ library.add(far)
 library.add(fab)
 
 app.component('Icon',FontAwesomeIcon)
+.component('Badge', Badge)
 .component('Button', Button)
 .component('Input',Input)
 .component('Text-Area',TextArea)

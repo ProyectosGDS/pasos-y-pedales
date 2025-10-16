@@ -47,14 +47,14 @@
     />
 
     <aside ref="sidebarRef" 
-        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full sm:translate-x-0"
+        class="fixed top-0 left-0 z-40 w-64 h-screen transition-transform -translate-x-full md:translate-x-0 border-r-2 border-gray-600 sm:border-0"
         :class="{
             '-translate-x-full': !openSidebar,
             'translate-x-0': openSidebar
         }">
         <div class="h-full px-3 py-4 overflow-y-auto bg-gray-50 dark:bg-gray-800">
             <RouterLink :to="{name : 'Home'}">
-                <Logo class="h-[3.4rem] w-auto fill-gray-800 dark:fill-gray-200" />
+                <Logo class="h-[3.4rem] w-auto fill-gray-600 dark:fill-gray-200" />
             </RouterLink>
             <br>
             <ul class="space-y-2 font-medium">
@@ -64,8 +64,8 @@
                     <li v-else-if="page.type == 'parent' && page.childrens?.length > 0">
                         <button 
                             @click="toggleParent(page.id)" 
-                            class="flex items-center w-full p-2 text-base cursor-pointer text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-00 dark:text-white dark:hover:bg-gray-700"
-                            :class="{'bg-gray-400 dark:bg-gray-700': openParentId === page.id}"> 
+                            class="flex items-center w-full p-2 text-base cursor-pointer transition duration-75 rounded-lg group hover:bg-gray-300 dark:text-white dark:hover:bg-gray-700"
+                            :class="{'bg-gray-300 dark:bg-gray-700': openParentId === page.id}"> 
                             <Icon :icon="page.icon" />
                             <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
                                 {{ page.label }}
@@ -77,8 +77,8 @@
                             <li v-for="child in page.childrens" :key="child.id">
                                 <RouterLink 
                                     :to="{ name : child.route}" 
-                                    class="flex items-center w-full p-2 text-base text-gray-900 transition duration-75 rounded-lg group hover:bg-gray-400 dark:text-white dark:hover:bg-gray-700"
-                                    :class="{'bg-gray-400 dark:bg-gray-700': route.name === child.route}"> 
+                                    class="flex items-center w-full p-2 text-base transition duration-75 rounded-lg group hover:bg-gray-300 dark:text-white dark:hover:bg-gray-700"
+                                    :class="{'bg-gray-300 dark:bg-gray-700': route.name === child.route}"> 
                                     <Icon :icon="child.icon" />
                                     <span class="flex-1 ms-3 text-left rtl:text-right whitespace-nowrap">
                                         {{ child.label }}
@@ -91,8 +91,8 @@
                     <li v-else>
                         <RouterLink 
                             :to="{ name : page.route}" 
-                            class="flex cursor-pointer items-center p-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-700 group" 
-                            :class="{'bg-gray-400 dark:bg-gray-700': route.name === page.route}">
+                            class="flex cursor-pointer items-center p-2 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-700 group" 
+                            :class="{'bg-gray-300 dark:bg-gray-700': route.name === page.route}">
                             <Icon :icon="page.icon" />
                             <span class="ms-3">{{ page.label }}</span>
                         </RouterLink>

@@ -150,6 +150,7 @@ export const useProfileStore = defineStore('profile', () => {
     return {
         information,
         copy_information,
+        picture,
         sessions,
         change,
         passwords,

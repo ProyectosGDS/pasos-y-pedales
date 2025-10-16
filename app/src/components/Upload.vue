@@ -38,7 +38,6 @@ const isDragOver = ref(false)
 const fileInputRef = ref(null)
 
 const finish = computed(() => props.finishProcess)
-const hasFile = computed(() => !!props.modelValue)
 
 watch(() => props.modelValue, (newFile) => {
     if (!newFile) {
@@ -149,7 +148,7 @@ if (props.modelValue instanceof File) {
                     <span class="font-semibold">Click to upload</span>
                     or drag and drop
                 </p>
-                <p class="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                <p class="text-[9px] text-gray-400 dark:text-gray-500 mt-1">
                     {{ props.description }}
                 </p>
             </div>

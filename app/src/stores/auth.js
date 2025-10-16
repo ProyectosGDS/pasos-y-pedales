@@ -58,7 +58,7 @@ export const useAuthStore = defineStore('auth', () => {
 
             accessToken.value = response.data.access_token
             user.value = response.data.user
-            userPermissions.value = response.data.user.permisos || []
+            userPermissions.value = response.data.user.permissions || []
             userMenu.value = response.data.user.menu || []
             credentials.value = {}
 
